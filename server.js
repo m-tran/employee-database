@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 const path = require("path");
+require("./models/connection");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
