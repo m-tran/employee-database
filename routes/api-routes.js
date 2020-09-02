@@ -16,7 +16,8 @@ router.get("/employees/:id", (req, res) => {
 
 router.post("/employees", (req, res) => {
     db.Employee.create({ 
-        name: req.body.name,
+        first_name: req.body.first,
+        last_name: req.body.last,
         phone: req.body.phone,
         address: req.body.address,
         title: req.body.title,
@@ -36,7 +37,8 @@ router.delete("/employees/:id", (req, res) => {
 
 router.put("/employees", (req, res) => {
     db.Employee.update({ 
-        name: req.body.name,
+        first_name: req.body.first,
+        last_name: req.body.last,
         phone: req.body.phone,
         address: req.body.address,
         title: req.body.title,
@@ -80,4 +82,4 @@ router.get("/roles/:id", (req, res) => {
     .catch(function(err) { res.json(err); });
 });
 
-module.exports = Router;
+module.exports = router;

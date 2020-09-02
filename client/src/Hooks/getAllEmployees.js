@@ -1,9 +1,9 @@
-import { useEffect } from React;
+import { useEffect } from "react";
 import axios from "axios";
 
-const getAllEmployees = (setEmployeeList) => {
+const GetAllEmployees = (setEmployeeList) => {
     useEffect(() => {
-        const API = async(setEmployeeList) => {
+        const api = async(setEmployeeList) => {
             let config = {
                 method: "GET",
                 url: "https://employee-db-22.herokuapp.com/employees",
@@ -13,11 +13,12 @@ const getAllEmployees = (setEmployeeList) => {
             await axios(config)
             .then((res) => {
                 let jsonString = JSON.stringify(res.data);
-                let jsonObject = JSON.parse(jsonSTring);
+                let jsonObject = JSON.parse(jsonString);
 
                 const employeesMapped = jsonObject.map((employee) => {
                     return {
-                        name: employee.name,
+                        first_name: employee.first,
+                        last_name: employee.last,
                         phone: employee.phone,
                         address: employee.address,
                         title: employee.title,
@@ -30,8 +31,8 @@ const getAllEmployees = (setEmployeeList) => {
             })
             .catch((error) => console.log(error));
         };
-        API(setEmployeeList);
+        api(setEmployeeList);
     }, [setEmployeeList]);
 };
 
-export default getAllEmployees;
+export default GetAllEmployees;
