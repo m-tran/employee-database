@@ -1,42 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
-import addRow from '../Hooks/addRow';
-import updateRow from '../Hooks/updateRow';
-import deleteRow from '../Hooks/deleteRow';
-import getAllEmployees from '../Hooks/getAllEmployees';
+import axios from "axios";
 
 
 function App() {
     const [entries, setEntries] = useState({
-        data: [
-            {
-                id: "",
-                first_name: "",
-                last_name: "",
-                phone: "",
-                address: "",
-                title: "",
-            }
-        ]
+        id: "",
+        first_name: "",
+        last_name: "",
+        phone: "",
+        address: "",
+        title: "",
     });
 
-    const [state] = React.useState({
-        columns: [
-            { title: "First Name", field: "first_name", type: "string" },
-            { title: "Last Name", field: "last_name", type: "string" },
-            { title: "Phone", field: "phone", type: "number"},
-            { title: "Address", field: "address", type: "string" },
-            { title: "Title", field: "title", type: "string" }
-        ] 
-    });
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: `https://employee-db-22.herokuapp.com/employees`,
+            headers: {},
+        })
+        .then((res) => {
+            let jsonString = JSON.stringify(res.data);
+            let jsonObject = JSON.parse(jsonString);
+            console.log(res);
+
+            const employeesMapped = jsonObject.map((employee) => {
+                return {
+                    first_name: employee.first,
+                    last_name: employee.last,
+                    phone: employee.phone,
+                    address: employee.address,
+                    title: employee.title,
+                    id: employee.id,
+                };
+            });
+
+            let employeeData = { data: employeesMapped };
+            setEntries(employeeData);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     return (
         <div>
             <MaterialTable
                 title="Employee Database"
                 columns={getAllEmployees.columns}
-                
-                editable={{addRow, updateRow, deleteRow}}
             />
         </div>
     );
